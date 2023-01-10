@@ -8,14 +8,21 @@
 </head>
 <body>
   <script type="module">
-    import { reactive } from './reactivity/index.js';
-    const obj = reactive({
-      name: 'helen',
-      age: '12',
+    import { reactive, effect } from './reactivity/index.js';
+    let total = 0;
+    const product = reactive({
+      price: 5000,
+      count: 3,
     });
-    console.log('====-17', obj.name);
-    delete obj.age;
-    console.log('====-19', obj);
+    effect(() => {
+      total = product.price * product.count;
+    });
+
+    console.log('====-21', total);
+    product.price = 6000;
+    console.log('====-22', total);
+    product.count = 1;
+    console.log('====-24', total);
   </script>
 </body>
 </html>
