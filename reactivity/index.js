@@ -68,3 +68,24 @@ export function trigger(target, key) {
     });
   }
 }
+
+export function ref(row) {
+  if (isObject(row) && row.__isRef_) return;
+  let value = convert(row);
+  const r = {
+    __isRef_: true,
+    get value() {
+      track(r, 'value');
+      return value;
+    },
+    set value(newVal) {
+      if (newVal !== value) {
+        row = newVal;
+        value = convert(newVal);
+        trigger(r, 'value');
+      }
+    }
+  };
+  return r;
+}
+
